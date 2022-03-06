@@ -24,10 +24,18 @@ int main(void)
 {
     struct key keytab[] = 
     {
+        {"\"string\"", 0},
+        {"#define", 0},
+        {"#else", 0},
+        {"#endif", 0},
+        {"#if", 0},
+        {"ifdef", 0},
+        {"#ifndef", 0},
         {"*/", 0},
         {"/*", 0},
         {"/**/", 0},
         {"//", 0},
+        {"__amd64", 0},
         {"auto", 0},
         {"break", 0},
         {"case", 0},
@@ -52,7 +60,7 @@ int main(void)
 
     while (getword(word, MAXWORDSIZE) != EOF)
     {
-        if (isalpha(word[0]) || word[0] == '/' || word[0] == '*')
+        if (isalpha(word[0]) || word[0] == '/' || word[0] == '*' || word[0] == '#' || word[0] == '_' || word[0] == '\"')
         {
             if ((n = binsearch(word, keytab, NKEYS)) >= 0)
             {
@@ -115,7 +123,7 @@ int getword (char *word, int limit)
         w++;
     }
 
-    if (!isalpha(c) && c != '*' && c != '/')
+    if (!isalpha(c) && c != '*' && c != '/' && c != '#' && c != '_' && c != '\"')
     {
         *w = '\0';
         return c;
@@ -123,7 +131,7 @@ int getword (char *word, int limit)
 
     for (; --limit > 0; w++)
     {
-        if (!isalnum(*w = getch()) && *w != '/' && *w != '*')
+        if (!isalnum(*w = getch()) && *w != '/' && *w != '*' && *w != '#' && *w != '_' && *w != '\"')
         {
             ungetch (*w);
             break;
