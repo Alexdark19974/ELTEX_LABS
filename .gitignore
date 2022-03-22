@@ -21,3 +21,5 @@ bin-release/
 .vscode/settings.json
 getword
 getword.o
+*.o
+dynamic
