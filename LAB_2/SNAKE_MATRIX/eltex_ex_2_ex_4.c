@@ -2,14 +2,6 @@
 #define MAX 100
 
 void snake(int *, int, int);
-/*
-ex.4: fill the matrix with the numbers from 1 to N^2 that looks like a snake
-1  2  3  4  5
-16 17 18 19 6
-15 24 25 20 7
-14 23 22 21 8
-13 12 11 10 9 
-*/
 
 int main(void)
 {
@@ -20,7 +12,7 @@ int main(void)
     int upper_shift = 0;
 
     printf("insert the size of columns and rows: ");
-    
+
     scanf("%d %d", &columns, &rows);
 
     int cycles = columns / 2;
@@ -41,14 +33,14 @@ int main(void)
             {
                 arr[i][j] = ++counter;
                 i++;
-                
+
                 if (i == columns - upper_shift)
                 {
                     break;
                 }
             }
             break;
-        } 
+        }
         for (int i = columns - 1 - upper_shift; i != columns - upper_shift && count != columns * rows; i++)
         {
             for (int j = rows - 2 - upper_shift; j >= upper_shift && count != columns * rows;)
@@ -64,7 +56,7 @@ int main(void)
             {
                 arr[i][j] = ++counter;
                 i--;
-                
+
                 if (i == 0 + upper_shift)
                 {
                     break;
@@ -74,14 +66,14 @@ int main(void)
         }
         upper_shift++;
     }
-    
+
     for (int i = 0; i != columns; i++)
     {
         for (int j = 0; j != rows; j++)
         {
-            
-              (arr[i][j] <= rows) ? 
-              printf(" %d  ", arr[i][j]) 
+
+              (arr[i][j] <= rows) ?
+              printf(" %d  ", arr[i][j])
             : printf(" %d ", arr[i][j]);
         }
         puts("");

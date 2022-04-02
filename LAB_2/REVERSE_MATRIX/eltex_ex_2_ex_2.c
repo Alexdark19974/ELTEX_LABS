@@ -44,5 +44,6 @@ void reverse(int *arr, int l)
         {
             printf("%d ", arr[j]);
         }
+	puts("");
     }
 }
