@@ -11,13 +11,13 @@ int main(void)
 	puts("Enter password:");
 
 	PwStatus = IsPassOk();
-	
-	if (PwStatus == 0) 
+
+	if (PwStatus == 0)
     {
         printf("Bad password!\n");
 		exit(1);
-	} 
-    else 
+	}
+    else
     {
 		printf("Access granted!\n");
 	}
