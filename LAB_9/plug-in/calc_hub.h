@@ -4,10 +4,14 @@
 #define BUFSIZE 1000
 #define NUMBER '1'
 #define MY_EOF -1
+#define INFO 1
+#define STATUS 2
+#define CLOSE_ALL 3
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <dlfcn.h>
 
 double calc(void);
 

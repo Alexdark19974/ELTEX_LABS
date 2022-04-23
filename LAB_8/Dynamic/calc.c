@@ -10,51 +10,57 @@ double calc (void)
 
     printf ("Insert data to be calculated: ");
 
-    for (;(token = my_get_line(buf_for_calc, MAX_LINE)) != '\n';)
+    for (;(token = my_get_line(buf_for_calc, MAX_LINE)) != EOF;)
 	{
 	    switch(token)
 	    {
-		case MY_EOF:
-		{
-		    return EOF;
-		}
-		case NUMBER:
-		{
-		    push_into_stack(stack, buf_for_calc, &counter);
-		    break;
-		}
-		case '+':
-		{
-		    res = add(stack, &counter);
-		    break;
-		}
-		case '-':
-		{
-                    res = sub(stack, &counter);
-                    break;
-		}
-		case '*':
-		{
-		    res = mul(stack, &counter);
-                    break;
-		}
-		case '/':
-		{
-		    res = _div(stack, &counter);
-                    break;
-		}
-		case '=':
-		{
-		    getchar();
-		    return res;
-		}
-		default:
-		{
-		    printf ("error: unknown command\n");
-		    exit (-1);
-		}
+			case MY_EOF:
+			{
+		    	return EOF;
+			}
+			case NUMBER:
+			{
+		    	push_into_stack(stack, buf_for_calc, &counter);
+		    	break;
+			}
+			case '+':
+			{
+		    	res = add(stack, &counter);
+		    	break;
+			}
+			case '-':
+			{
+        		res = sub(stack, &counter);
+            	break;
+			}
+			case '*':
+			{
+		    	res = mul(stack, &counter);
+                break;
+			}
+			case '/':
+			{
+		    	res = _div(stack, &counter);
+                break;
+			}
+			case '=':
+			{
+		    	getchar();
+				printf("= %lf\n", res);
+		    	return (res = 0);
+			}
+			case '\n':
+			{
+				printf("= %lf\n", res);
+				return (res = 0);
+			}
+			default:
+			{
+		    	printf ("error: unknown command\n");
+		    	exit (-1);
+			}
 	    }
 	}
 
-	return res;
+	return token;
 }

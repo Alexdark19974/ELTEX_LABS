@@ -6,7 +6,7 @@ int main (void)
 
     while ((res = calc()) != EOF)
     {
-    	printf(" = %lf;\n", res);
+    	;
     }
 
     return 0;

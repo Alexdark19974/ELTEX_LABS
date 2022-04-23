@@ -20,6 +20,8 @@ CHAIN_3 = $(FUNC_1).o $(FUNC_2).o $(FUNC_3).o $(FUNC_4).o
 CHAIN_4 = $(FUNC_5).o $(FUNC_6).o $(FUNC_7).o $(FUNC_8).o
 EXEC_FILE_1 = calc
 
+.PHONY: all test_calc clean
+
 all: $(CHAIN_1) $(CHAIN_2) $(FUNC_0).c $(HEADER)
 
 	$(CC) $(FLAG_2) $(FUNC_1).c $(FUNC_2).c $(FUNC_3).c $(FUNC_4).c $(FUNC_5).c $(FUNC_6).c $(FUNC_7).c $(FUNC_8).c

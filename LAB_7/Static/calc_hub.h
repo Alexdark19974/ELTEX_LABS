@@ -3,6 +3,7 @@
 #define MAX_LINE 50
 #define NUMBER '1'
 #define MY_EOF -1
+#define BUFSIZE 1000
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
