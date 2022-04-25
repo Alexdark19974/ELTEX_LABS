@@ -20,7 +20,7 @@ FUNC_2 = add
 FUNC_3 = sub
 FUNC_4 = mul
 FUNC_5 = div
-	`FUNC_6 = push_stack
+FUNC_6 = push_stack
 FUNC_7 = stack_pop
 FUNC_8 = my_get_line
 CHAIN_1 = $(FUNC_1).c $(FUNC_2).c $(FUNC_3).c $(FUNC_4).c
@@ -29,11 +29,13 @@ CHAIN_3 = $(FUNC_1).o $(FUNC_2).o $(FUNC_3).o $(FUNC_4).o
 CHAIN_4 = $(FUNC_5).o $(FUNC_6).o $(FUNC_7).o $(FUNC_8).o
 EXEC_FILE_1 = calc
 
+.PHONY: pic all all_2 all_3 test_calc test_calc_2 test_calc_3 clean clean_2 clean_3
+
 pic: $(CHAIN_1) $(CHAIN_2)
 
 		$(CC) $(FLAG_3) $(CHAIN_1) $(CHAIN_2) $(FLAG_2)
 
-all: $(CHAIN_1) $(CHAIN_2) $(FUNC_0) $(HEADER)
+all: $(CHAIN_1) $(CHAIN_2) $(FUNC_0).c $(HEADER)
 
 		$(CC) $(FUNC_1).c $(FUNC_2).c $(FUNC_3).c $(FUNC_4).c $(FUNC_5).c $(FUNC_6).c $(FUNC_7).c $(FUNC_8).c $(FLAG_3) $(FLAG_2)
 
@@ -44,7 +46,7 @@ all: $(CHAIN_1) $(CHAIN_2) $(FUNC_0) $(HEADER)
 		$(CC) $(FUNC_0).o $(LIB_NAME).so$(VERS) $(FLAG_1) $(EXEC_FILE_1)
 
 
-all_2: $(CHAIN_1) $(CHAIN_2) $(FUNC_0) $(HEADER)
+all_2: $(CHAIN_1) $(CHAIN_2) $(FUNC_0).c $(HEADER)
 
 		$(CC) $(FUNC_1).c $(FUNC_2).c $(FUNC_3).c $(FUNC_4).c $(FUNC_5).c $(FUNC_6).c $(FUNC_7).c $(FUNC_8).c $(FLAG_3) $(FLAG_2)
 
@@ -54,7 +56,7 @@ all_2: $(CHAIN_1) $(CHAIN_2) $(FUNC_0) $(HEADER)
 
 		$(CC) $(FUNC_0).o $(FLAG_1) $(EXEC_FILE_1) $(L_FLAG_1) $(L_FLAG_2) $(L_FLAG_3)$(L_FLAG_4)
 
-all_3: $(CHAIN_1) $(CHAIN_2) $(FUNC_0) $(HEADER)
+all_3: $(CHAIN_1) $(CHAIN_2) $(FUNC_0).c $(HEADER)
 
 		$(CC) $(FUNC_1).c $(FUNC_2).c $(FUNC_3).c $(FUNC_4).c $(FUNC_5).c $(FUNC_6).c $(FUNC_7).c $(FUNC_8).c $(FLAG_3) $(FLAG_2)
 

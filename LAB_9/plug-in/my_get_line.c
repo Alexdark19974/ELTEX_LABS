@@ -9,15 +9,15 @@ int my_get_line (char *s, int max)
     int i = 0;
     char temp = 0;
 	int getch(void);
-    void ungetch(int);
+	void ungetch(int);
 
-
-    while ((c = getch()) == ' ' ||  c == '\t')
+    while ((c = getch()) == ' '  || c == '\t')
     {
 		;
     }
 
-    if (c == '-')
+
+	if (c == '-')
     {
 		temp = c;
 		c = getch();
@@ -36,30 +36,30 @@ int my_get_line (char *s, int max)
 
     if (isdigit(c))
     {
-	if (temp)
-	{
-	    s[i] = temp;
-	    i++;
-	}
-	s[i] = c;
-	i++;
+		if (temp)
+		{
+	    	s[i] = temp;
+	    	i++;
+		}
+			s[i] = c;
+			i++;
 
-	for (; isdigit(c = getch()); i++)
+		for (; isdigit(c = getch()); i++)
 	    {
-		s[i] = c;
+			s[i] = c;
 	    }
     }
 
     if (c == '+' || c == '-' || c == '*' || c == '/' || c == '=')
     {
-	s[i] = c;
-	s[i] = '\0';
-	return c;
+		s[i] = c;
+		s[i] = '\0';
+		return c;
     }
 
     if (c == '\n')
     {
-	return c;
+		return c;
     }
 
     if (c == EOF)
