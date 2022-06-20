@@ -1,0 +1,30 @@
+// SPDX-License-Identifier: GPL-2.0
+/*
+ * This file contains functions which manage clock event devices.
+ *
+ * Copyright(C) 2005-2006, Thomas Gleixner <tglx@linutronix.de>
+ * Copyright(C) 2005-2007, Red Hat, Inc., Ingo Molnar
+ * Copyright(C) 2006-2007, Timesys Corp., Thomas Gleixner
+ */
+
+#include <linux/clockchips.h>
+#include <linux/hrtimer.h>
+#include <linux/init.h>
+#include <linux/module.h>
+#include <linux/smp.h>
+#include <linux/device.h>
+
+#include "tick-internal.h"
+
+/* The registered clock event devices */
+static LIST_HEAD(clockevent_devices);
+static LIST_HEAD(clockevents_released);
+/* Protection for the above */
+static DEFINE_RAW_SPINLOCK(clockevents_lock);
+/* Protection for unbind operations */
+static DEFINE_MUTEX(clockevents_mutex);
+
+struct ce_unbind {
+	struct clock_event_device *ce;
+	int res;
+};

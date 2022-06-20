@@ -1,0 +1,70 @@
+// SPDX-License-Identifier: GPL-2.0
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <string.h>
+#include <unistd.h>
+#include <time.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <ctype.h>
+#include <limits.h>
+
+/*
+ * Original work by Jeff Garzik
+ *
+ * External file lists, symlink, pipe and fifo support by Thayne Harbaugh
+ * Hard link support by Luciano Rocha
+ */
+
+#define xstr(s) #s
+#define str(s) xstr(s)
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
+
+static unsigned int offset;
+static unsigned int ino = 721;
+static time_t default_mtime;
+static bool do_csum = false;
+
+struct file_handler {
+	const char *type;
+	int (*handler)(const char *line);
+};
+
+static void push_string(const char *name)
+{
+	unsigned int name_len = strlen(name) + 1;
+
+	fputs(name, stdout);
+	putchar(0);
+	offset += name_len;
+}
+
+static void push_pad (void)
+{
+	while (offset & 3) {
+		putchar(0);
+		offset++;
+	}
+}
+
+static void push_rest(const char *name)
+{
+	unsigned int name_len = strlen(name) + 1;
+	unsigned int tmp_ofs;
+
+	fputs(name, stdout);
+	putchar(0);
+	offset += name_len;
+
+	tmp_ofs = name_len + 110;
+	while (tmp_ofs & 3) {
+		putchar(0);
+		offset++;
+		tmp_ofs++;
+	}
+}
+
