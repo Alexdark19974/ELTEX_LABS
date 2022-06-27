@@ -1,0 +1,10 @@
+IPC: Messgae queues with message priority
+In the previous post we saw how we can create a message queue and use the same to communicate between processes.
+
+The message queues also have the ability to assign priorities to messages that are sent, so that while recieving the messages with higher priority are recieved first even if they are sent after a low priority message.
+
+Let us look at this operation of the message queues using an example.
+
+We will use the example similar to the one used in the previous post, only difference being the queue is being created by the sender where as in the previous example it was created by the reciever.
+
+To set the priority of a message we pass the priority as an integer number to the call mq_send. For eg :
