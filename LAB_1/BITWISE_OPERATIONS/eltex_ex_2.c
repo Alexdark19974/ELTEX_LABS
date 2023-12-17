@@ -1,38 +1,45 @@
 #include <stdio.h>
-#define BIT 8
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include <limits.h>
+#define BITS 8
+#define PRINT_ERROR(str) do { fprintf(stderr, "%s", str); if (errno) fprintf(stderr, "%s", strerror(errno)); puts(""); exit(EXIT_FAILURE); } while(0);
 
 // ex.2: modify the program so you only the 3rd byte is changed, but the rest stay intact.  0x00(DD)AABB > > 0x00(00)AABB 0x00FFAABB
 
 int main(void)
 {
-    int a = 0x00DDAABB;
-    int shift = 0x000000FF;
-    int byte = 0;
-    int value = 0;
+   unsigned int a = 0x00DDAABB, mask = 0xFFFFFFFF, byte = 0, value = 0;
+   int ret = 0;
 
-    printf("the original value for task 2  is %x\n", a);
+    {
+        puts("                          1 2 3 4");
+        printf("the signed int value = 0x%08X\n", a);
 
-    printf("insert the byte that needs to be changed: ");
+        printf("enter the number of the byte to be changed: ");
 
-    scanf("%d", &byte);
+        ret = scanf("%u", &byte);
 
-    printf("instert the value that needs to be put in place of 3rd byte: ");
+        if (ret == 0) PRINT_ERROR("error: failed to write to byte!")
+        else if (ret == EOF) PRINT_ERROR("error: met EOF")
+        else if (byte > 4) PRINT_ERROR("error: the chosen byte cannot less than 0!")
 
-    scanf("%d", &value);
+        puts("enter the value of the new byte: ");
 
-    printf("the input value is %x\n", value);
+        ret = scanf("%u", &value);
 
-    a = a & (~(shift << (BIT * (byte - 1))));
-    //0x000000FF << 16 > 0x00FF0000 > 0xFF00FFFF > 0x00DDAABB & 0xFF00FFFF
-    // a = 0x0000AABB
+        if (ret == 0) PRINT_ERROR("error: failed to write to value.")
+        else if (ret == EOF) PRINT_ERROR("error: met EOF")
+        else if (value > UCHAR_MAX) PRINT_ERROR("error: value cannot be more than 255!")
 
-    value = (value << (BIT * (byte - 1)));
-    //0x0000000b << 16 > 0x000b0000
+        a = a & (mask >> (BITS * (byte)));
 
-    //printf("%x\n", value);
-    // 0x0000AABB |0x000b0000 > 0x000baabb
-    printf("the result is %x\n", a | value);
+        value = (value << (BITS * sizeof(unsigned int) - BITS *byte)) | a;
 
-    return 0;
+        printf("the result is 0x%08X\n", value);
+    }
+
+    return EXIT_SUCCESS;
 }
 

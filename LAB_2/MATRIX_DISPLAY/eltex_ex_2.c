@@ -1,5 +1,10 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <string.h>
+#include <limits.h>
 #define MAX 100
+#define PRINT_ERROR(str) do { fprintf(stderr, "%s", str); if (errno) fprintf(stderr, "%s", strerror(errno)); puts(""); exit(EXIT_FAILURE); } while(0);
 /*
 ex.1: display the matrix N x N
 1 2 3
@@ -18,26 +23,41 @@ ex.4: fill the matrix with the numbers from 1 to N^2 that looks like a snake
 14 23 22 21 8
 13 12 11 10 9
 */
+
+void fill_matrix(int elements_total, int rows, int *mtrx)
+{
+    int counter = 0;
+    for (int i = 0; i < elements_total; i++)
+        mtrx[i] = ++counter;
+}
+
+void display_matrix(int elements_total, int rows, int *mtrx)
+{
+    for (int i = 0; i < elements_total; i++) {
+        printf("%d ", mtrx[i]);
+        if (((i + 1) % rows) == 0)
+            puts("");
+    }
+}
+
 int main(void)
 {
     int arr[MAX][MAX] = {0};
-    int columns, rows;
-    columns = rows = 0;
+    int rows, columns, counter, ret;
 
-    printf("insert the number of columns and rows: ");
-    scanf("%d %d", &columns, &rows);
+    columns = rows = counter = ret = 0;
 
-    for (int i = 0; i != columns; i++)
-    {
-        static int counter = 0;
+    printf("insert the number of columns and rows (e.g \"5 5\"): ");
 
-        for (int j = 0; j != rows; j++)
-        {
-            printf("%d ", arr[i][j] = ++counter);
-        }
+    ret = scanf("%32d %32d", &columns, &rows);
+    if (ret == 0 || ret == 1) PRINT_ERROR("failed to read columns and rows!")
+    else if (ret == EOF) PRINT_ERROR("received EOF!")
+    if ((columns > MAX || rows > MAX) || (columns <= 1 || rows <= 1)) PRINT_ERROR("you can't print more 100 rows or 100 columns or equal/less than 1!")
 
-        puts("");
-    }
+    printf("total number of elements in matrix = %d\n", rows * columns);
 
-    return 0;
+    fill_matrix(rows * columns, rows, *arr);
+
+    return EXIT_SUCCESS;
 }
+
