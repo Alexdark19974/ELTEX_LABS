@@ -6,11 +6,12 @@
 #define PRINT_ERROR(str) do { fprintf(stderr, "%s", str); if (errno) fprintf(stderr, "%s", strerror(errno)); puts(""); exit(EXIT_FAILURE); } while(0);
 #define MAX 100 // hard-coded limit
 #if defined(ARRAY_SOLUTION)
-void snake_matrix(int, int, int [][]);
+void snake_matrix(int rows, int columns, int [rows][columns]);
+void display_matrix(int rows, int columns, int [rows][columns]);
 #else
 void snake_matrix(int, int, int *);
-#endif
 void display_matrix(int, int, int *);
+#endif
 
 int main(void)
 {
@@ -31,10 +32,13 @@ int main(void)
         elements_total = rows * columns;
 
         printf("total number of elements in matrix = %d\n", elements_total);
-
+#ifndef ARRAY_SOLUTION
         snake_matrix(rows, columns, *arr);
-
-        display_matrix(elements_total, rows, *arr);
+        display_matrix(columns, elements_total, *arr);
+#else
+        snake_matrix(rows, columns, arr);
+        display_matrix(rows, columns, arr);
+#endif
     }
 
     return EXIT_SUCCESS;
@@ -43,45 +47,59 @@ int main(void)
 #ifndef ARRAY_SOLUTION
 void snake_matrix(int rows, int columns, int *mtrx)
 {
-    int counter = 0;
-    int rounds = (columns / 2) + (columns % 2);
-    int l_to_r_upper = 0, l_border_down = 0;
-    int r_to_l_lower = 0, r_border_up = 0;
-    int depth = 0, offset = 0;
+    int counter = 0, depth = 0, rounds = (columns / 2) + (columns % 2);
 
     for (int i = 0; i < rounds; i++) {
-
-        offset+=rows; // how farther left we need to depth in one-dimensional array
-
-        for (l_to_r_upper = depth; (counter < rows * columns) && l_to_r_upper < rows - depth; l_to_r_upper++) {
-            mtrx[l_to_r_upper + (rows * depth)] = ++counter;
+        for (int row = columns * depth, column = depth;
+                (counter < rows * columns) && column < columns - depth;
+                column++) {
+            mtrx[row + column] = ++counter;
         }
 #if 0
         if (depth == 2)
             return;
 #endif
-
-        for (l_border_down = l_to_r_upper + offset - 1; (counter < rows * columns) && l_border_down < rows * (columns - depth); l_border_down += rows /* Move down at the end of each row */) {
-            mtrx[l_border_down] = ++counter;
-        }
-#if 0 
-        if (depth == 0)
+        for (int row = columns * (depth + 1), column = columns - depth - 1;
+                (counter < rows * columns) && row < (rows * columns - (columns * depth));
+                row += columns) {
+            mtrx[row + column] = ++counter;
+  //          printf("column = %d, row = %d\n", column, row);
+#if 0
+        if (depth == 2)
             return;
 #endif
-        /* l_to_r_upper - 1 -depth is a counter for r_to_l_lower */
-        for (r_to_l_lower = l_border_down - rows - 1; (counter < rows * columns) && l_to_r_upper - 1 - depth > 0; r_to_l_lower-- , l_to_r_upper--) {
-            mtrx[r_to_l_lower] = ++counter;
         }
 #if 0
-        if (depth == 0)
+        if (depth == 2)
+            return;
+#endif
+        for (   int row = rows * columns - (columns * (depth + 1)), column = columns - 2 - depth;
+                (counter < rows * columns) && column > depth;
+                column--) {
+            mtrx[row + column] = ++counter;
+          //  printf("column = %d, row = %d\n", column, row);
+#if 0
+        if (depth == 1)
+            return;
+#endif
+        }
+#if 0
+        if (depth == 1)
             return;
 #endif
 
-        for (r_border_up = r_to_l_lower - rows + 1; (counter < rows * columns) && r_border_up > depth * rows + depth; r_border_up -= rows) {
-            mtrx[r_border_up] = ++counter;
+        for ( int row = rows * columns - (columns * (depth +1)), column = depth;
+                (counter < rows * columns) && row > depth * columns;
+                row -= columns) {
+            mtrx[row + column] = ++counter;
+           // printf("\n---------\nrow + column = %d, column = %d, row = %d\n", row + column, column, row);
+#if 0
+        if (depth == 1)
+            return;
+#endif
         }
 #if 0
-        if (depth)
+        if (depth == 1)
             return;
 #endif
 //        break;
@@ -89,44 +107,51 @@ void snake_matrix(int rows, int columns, int *mtrx)
     }
 }
 #else
-void snake_matrix(int rows, int columns, int mtrx[rows][columns])
+/* This is by far the most human-readable solution */
+void snake_matrix(int rows, int columns, int mtrx[rows][columns]) // VLA
 {
-    int counter = 0;
+    int counter = 0, depth = 0;
     int rounds = (columns / 2) + (columns % 2);
-    int left = 0, left_down = 0;
-    int right = 0, right_up = 0;
-    int depth = 0, offset = 0;
 
     for (int i = 0; i < rounds; i++) {
 
-        offset+=rows; // how farther left we need to depth in one-dimensional array
-
-        for (left = depth; (counter < rows * columns) && left < rows - depth; left++) {
+        for (int row = depth, column = depth; (counter < rows * columns) && column < columns - depth; column++) {
+            mtrx[row][column] = ++counter;
         }
 
-        for (left_down = left + offset - 1; (counter < rows * columns) && left_down < rows * (columns - depth); left_down += rows) {
-            mtrx[left_down][left] = ++counter;
+        for (int row = depth + 1, column = columns - depth - 1; (counter < rows * columns) && row < rows - depth; row++) {
+            mtrx[row][column] = ++counter;
         }
 
-        for (right = left_down - rows - 1; (counter < rows * columns) && left - 1 - depth > 0 ; right--, left--) {
-            mtrx[right] = ++counter;
+        for (int row = rows - depth - 1, column = columns - depth - 2; (counter < rows * columns) && column > depth; column--) {
+            mtrx[row][column] = ++counter;
         }
 
-        for (right_up = right - rows + 1; (counter < rows * columns) && right_up > depth * rows + depth; right_up -= rows) {
-            mtrx[right_up] = ++counter;
+        for (int row = rows - depth - 1, column = depth; (counter < rows * columns) && row > depth; row--) {
+            mtrx[row][column] = ++counter;
         }
-
         depth++;
     }
 }
 #endif
 
-void display_matrix(int elements_total, int rows, int *mtrx)
+#ifndef ARRAY_SOLUTION
+void display_matrix(int columns, int elements_total, int *mtrx)
 {
     for (int i = 0; i < elements_total; i++) {
         printf("%d ", mtrx[i]);
-        if (((i + 1) % rows) == 0)
+        if (((i + 1) % columns) == 0)
             puts("");
     }
 }
-
+#else
+void display_matrix(int rows, int columns, int mtrx[rows][columns])
+{
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            printf("%d ", mtrx[i][j]);
+        }
+        puts("");
+    }
+}
+#endif
