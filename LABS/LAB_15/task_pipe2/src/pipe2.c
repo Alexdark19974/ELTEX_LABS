@@ -1,0 +1,206 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <string.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <stdbool.h>
+#define READ    0
+#define WRITE   1
+#define PIPE_NUM 2
+#define PID_NUM 2
+#define BUF_SIZ 256
+#define handle_error(msg, errnum)  do { \
+                                    char buf[BUF_SIZ] = {0}; \
+                                    char *err_str = strerror_r((errnum), buf, sizeof(buf)); \
+                                    fprintf(stderr, "[%s:%d] error: %s: %s\n", __func__, __LINE__, (msg), err_str); \
+                                } while(0)
+#define handle_error_msg(fmt, ...) do { \
+                            fprintf(stderr, fmt, __VA_ARGS__); \
+                        } while(0)
+
+int my_pipe(int cmd_num, char ***cmds);
+
+int main(int argc, char **argv)
+{
+    int i, j, l;
+    int next_cmd_idx;
+    int pipe_num, arg_num, cmd_num, pipe_idx = 0;
+    int ret = EXIT_FAILURE;
+    char ***cmds;
+
+    if (argc <= 4) {
+        handle_error_msg("Usage: %s ls -la | head -n4 (4 parameters required)\n", argv[0]);
+        return EXIT_FAILURE;
+    }
+
+    for (i = 1, pipe_num = 0; i < argc; i++) {
+        if (*argv[i] == '|') {
+            pipe_num++;
+            pipe_idx = i;
+        }
+    }
+
+    if (pipe_num < 1) {
+        handle_error_msg("error: more than or less than 1 pipe is not supported. You have %d\n", pipe_num);
+        return EXIT_FAILURE;
+    }
+
+    if (pipe_idx == 1 || pipe_idx == argc - 1) {
+        handle_error_msg("error: '|' requires a command on both sides. You have %d\n", pipe_idx);
+        return EXIT_FAILURE;
+    }
+
+    cmd_num = pipe_num + 1;
+    printf("cmd_num = %d\n", cmd_num);
+
+    cmds = calloc(cmd_num, sizeof(char ***));
+    if (!cmds) {
+        handle_error("calloc", errno);
+        goto err;
+    }
+
+    next_cmd_idx = 1;
+
+    for (i = 0; i < cmd_num; i++) {
+        for (j = next_cmd_idx, arg_num = 0; j < argc; j++) {
+            if (*argv[j] == '|') {
+                break;
+            }
+            arg_num++;
+        }
+        printf("arg_num = %d\n", arg_num);
+        cmds[i] = calloc(arg_num + 1, sizeof(char **));
+        if (!cmds[i]) {
+            handle_error("calloc", errno);
+            goto err;
+        }
+        for (l = 0, j = next_cmd_idx; l < arg_num; l++, j++) {
+            cmds[i][l] = argv[j];
+            printf("cmds[%d][%d] = %s\n", i, l, cmds[i][l]);
+        }
+        cmds[i][l] = NULL;
+        next_cmd_idx = j + 1;
+    }
+
+    ret = my_pipe(cmd_num, cmds);
+
+err:
+    if (cmds) {
+        for (i = 0; i < cmd_num; i++)
+            free(cmds[i]);
+        free(cmds);
+    }
+
+    return ret;
+}
+
+int my_pipe(int cmd_num, char ***cmds)
+{
+    pid_t pid[PID_NUM];
+    int pipefd[2] = {-1}, pipe_num;
+    int ret = 0, wret = 0, i, j;
+
+    pipe_num = cmd_num - 1;
+
+    for (i = 0, j = 0; i < pipe_num; i++) {
+
+        ret = pipe(pipefd);
+        if (ret < 0) {
+            handle_error("pipe", errno);
+            return EXIT_FAILURE;
+        }
+
+        for (; j < cmd_num; j++) {
+
+            pid[j] = fork();
+            printf("pid[%d] = %d\n", j, pid[j]);
+            if (pid[j] < 0) {
+                handle_error("fork", errno);
+                (void)close(pipefd[READ]);
+                (void)close(pipefd[WRITE]);
+                if (j > 0) {
+                    (void)kill(pid[j - 1], SIGKILL);
+                    wret = waitpid(pid[j - 1], &ret, 0);
+                    if (wret < 0)
+                        handle_error("waitpid", errno);
+                    if (WIFEXITED(ret)) 
+                        printf("exited, status=%d\n", WEXITSTATUS(ret));
+                    else if (WIFSIGNALED(ret)) 
+                        printf("killed by signal %d\n", WTERMSIG(ret));
+                }
+                return EXIT_FAILURE;
+            }
+
+             /* child section */
+            if (0 == pid[j]) {
+                int pipe_idx = j % 2 ? READ : WRITE;
+                int fd_num = j % 2 ? STDIN_FILENO : STDOUT_FILENO;
+                ret = dup2(pipefd[pipe_idx], fd_num); //  dup stdout, then close it
+                if (ret < 0)  {
+                    handle_error("dup2", errno);
+                    exit(EXIT_FAILURE);
+                }
+
+                /*  The Core Rule of Pipe EOF (End-of-File) */
+                /*  A process reading from a pipe will keep waiting for data indefinitely until it receives an EOF signal.
+                    The Linux kernel will only send an EOF to a reader when every single process
+                    in the entire operating system that holds an open reference to the Write-end of that pipe closes it.
+                    If even one running process keeps pipefd[WRITE] open, the kernel assumes more data might be written eventually.
+                    Therefore, it keeps the reading process asleep, waiting for that data. */
+
+                ret = close(pipefd[WRITE]); // not needed after swap with stdout
+                if (ret < 0) {
+                    handle_error("close", errno);
+                    exit(EXIT_FAILURE);
+                }
+
+                ret = close(pipefd[READ]); // not needed at all
+                if (ret < 0) {
+                    handle_error("close", errno);
+                    exit(EXIT_FAILURE);
+                }
+
+                /* the output is written to stdout, which has been reopened as pipefd[WRITE] */
+                /* stdout = pipefd[WRITE] */
+                ret = execvp(cmds[j][0], cmds[j]);
+                if (ret < 0) { // this should never happen
+                    handle_error("execlp", errno);
+                    exit(EXIT_FAILURE);
+                }
+            }
+        }
+    }
+
+    /* parent section */
+    ret = close(pipefd[READ]);
+    if (-1 == ret) {
+        handle_error("close", errno);
+        ret = EXIT_FAILURE;
+    }
+
+    ret = close(pipefd[WRITE]);
+    if (-1 == ret) {
+        handle_error("close", errno);
+        ret = EXIT_FAILURE;
+    }
+
+    for (j = 0; j < cmd_num; j++) {
+        if (pid[j] > 0) {
+            wret = waitpid(pid[j], &ret, 0);
+            if (wret < 0) {
+                handle_error("waitpid", errno);
+                break;
+            }
+            if (WIFEXITED(ret)) 
+                printf("exited, status=%d\n", WEXITSTATUS(ret));
+            else if (WIFSIGNALED(ret)) 
+                printf("killed by signal %d\n", WTERMSIG(ret));
+        }
+    }
+
+    return ret;
+}

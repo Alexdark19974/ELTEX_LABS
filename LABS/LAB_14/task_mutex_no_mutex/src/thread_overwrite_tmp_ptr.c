@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <string.h>
+#include <pthread.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <errno.h>
+#define THREAD_NUM 10
+#define INCR_MAX 100000000
+#define BUF_SIZ 256
+#define handle_error(msg, errnum)  do { \
+                                    char buf[BUF_SIZ] = {0}; \
+                                    char *err_str = strerror_r((errnum), buf, sizeof(buf)); \
+                                    fprintf(stderr, "[%s:%d] error: %s: %s\n", __func__, __LINE__, (msg), err_str); \
+                                } while(0)
+
+void *thread_increment(void *args);
+
+int main(void)
+{
+        long a = 0; // shared resource
+        int i = 0, ret = 0;
+        pthread_t threads[THREAD_NUM] = {0};
+
+        for (i = 0; i < THREAD_NUM; i++) {
+            /* 2 threads start asynchronously, modifying arg a */
+            if ((ret = pthread_create(&threads[i], NULL, &thread_increment, &a)) != 0)
+                handle_error("pthread_create", errno);
+        }
+
+        for (i = 0; i < THREAD_NUM; i++) {
+            /* main thread waits for each thread to terminate */
+            if ((ret = pthread_join(threads[i], NULL)) != 0)
+                handle_error("pthread_join", errno);
+        }
+
+        /* the result will almost never be 100000000 */
+        printf("the result of %d threads doing %d increments is %ld\n", THREAD_NUM, INCR_MAX, a);
+        /* p.s. on my PC, it is, in fact, 1000000000 probably because thread 1 manages to finish its work fast enough*/
+
+        return EXIT_SUCCESS;
+}
+
+void *thread_increment(void *args)
+{
+        long *tmp_ptr = NULL;
+        long tmp = 0;
+        int i = 0;
+
+        if (!args)
+            return NULL;
+
+        for (i = 0; i < INCR_MAX; i++) {
+            tmp_ptr = (long *)args;
+            tmp = *tmp_ptr;
+            tmp++;
+            *tmp_ptr = tmp;
+            // printf("a = %ld\n", *tmp_ptr);
+        }
+
+        return NULL;
+}
