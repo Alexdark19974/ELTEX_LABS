@@ -1,18 +1,43 @@
-# Потоки, сигналы и ожидание
-## Задание:
-### Написать программу, которая реализует функции 'pthread_cond_wait()' и 'pthread_cond_signal()'.
-### Потребитель на заправке. На заправке нет бензина, ждёт пока не будет сигнала о полной заправке. Как только полный бак у потребителя, программа завершается.
-____
+# Condition variables
 
-#### Сборка проекта:
+**Lab:** `LAB_14` · **Task:** `task_cond_wait`
 
-'~$ make all'
+## Goal
 
-#### Запуск проекта:
+Variants of `pthread_cond_wait` / `pthread_cond_signal` producer–consumer style sync.
 
-'~$ make wait'
+## Build
 
-#### Удаление проекта:
+From the repository root (copies sources into `build/` then builds):
 
-'~$ make clean'
-____
+```bash
+make build_LAB_14
+```
+
+Or build only this task after the lab tree exists under `build/`:
+
+```bash
+make -C build/LABS/LAB_14/task_cond_wait build
+```
+
+You can also `cd` into `LABS/LAB_14/task_cond_wait` and run `make build` if `vars.make` paths resolve (root build flow is the supported path).
+
+## Run
+
+`make build`; run `cond_wait_signal_*` from `bin/` (`PROG=... make run`).
+
+Expected binaries (under `bin/` of the build tree): `cond_wait_signal_1`, `cond_wait_signal_2`, `cond_wait_signal_3`, `cond_wait_signal_4`, `cond_wait_signal_5`.
+
+For multi-binary tasks:
+
+```bash
+PROG=<name> make run
+```
+
+## Clean
+
+```bash
+make -C build/LABS/LAB_14/task_cond_wait clean
+# or from root:
+make clean_LAB_14
+```

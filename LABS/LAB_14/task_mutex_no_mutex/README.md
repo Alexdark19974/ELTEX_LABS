@@ -1,27 +1,43 @@
-# Создание потоков
-## Задание:
-### Написать 2 программы, которые порождают 1000 потоков, каждый из которых имеет цикл от 0 до 100.000 - 1. Результат: переменная 'a' имеет значение 100.000.000 
-### Первая программа не имеет синхронизацию, поэтому переменная 'a' будет хаотично изменяться.
+# Races vs mutex strategies
 
-### Результат: переменная 'a' имеет результат гораздо меньший чем 100.000.000. Каждый поток проходит цикл до 100.000 - 1, но, так как постоянно 'a' изменяется всеми потоками, число будет меньше. 
+**Lab:** `LAB_14` · **Task:** `task_mutex_no_mutex`
 
-### Вторая программа реализует синхронизацию посредством мьютексов. Как только первый поток начинает выполнять свою функцию, mutex перехватывает его, и блокирует остальные потоки до тех пор, пока первый поток не будет выполнен.
-### Результат: перменная 'a' гарантированно будет иметь результат в 100.000.000.
-____
+## Goal
 
-#### Сборка проекта:
+Multiple programs increment a shared counter with/without mutexes and with different locking granularities to show lost updates.
 
-'~$ make all'
+## Build
 
-#### Запуск проекта:
+From the repository root (copies sources into `build/` then builds):
 
-'~$ make test_thread_1'
+```bash
+make build_LAB_14
+```
 
-'~$ make test_thread_2'
+Or build only this task after the lab tree exists under `build/`:
 
-#### Удаление проекта:
+```bash
+make -C build/LABS/LAB_14/task_mutex_no_mutex build
+```
 
-'~$ make clean_1'
+You can also `cd` into `LABS/LAB_14/task_mutex_no_mutex` and run `make build` if `vars.make` paths resolve (root build flow is the supported path).
 
-'~$ make clean_2'
-____
+## Run
+
+`make build`, then `PROG=<binary> make run` for each program in `bin/`.
+
+Expected binaries (under `bin/` of the build tree): `thread_total_overwrite`, `thread_partial_overwrite`, `thread_mutex_coarse_grained`, `thread_mutex_fine_grained`, `thread_mutex_local_accum`, `thread_force_context_switch`, `thread_no_printf_as_sync_point`, `thread_overwrite_tmp_ptr`.
+
+For multi-binary tasks:
+
+```bash
+PROG=<name> make run
+```
+
+## Clean
+
+```bash
+make -C build/LABS/LAB_14/task_mutex_no_mutex clean
+# or from root:
+make clean_LAB_14
+```

@@ -1,21 +1,43 @@
-# Потоки
-## Задание:
-### Написать программу, которая перемножает 2 матрицы в 2 потока.
-____
+# Threaded matrix multiply
 
-#### Сборка проекта:
+**Lab:** `LAB_14` · **Task:** `task_matrix`
 
-'~$ make all'
+## Goal
 
-#### Запуск проекта:
+Parallel matrix multiplication using pthreads.
 
-'~$ make matrix_1'
+## Build
 
-'~$ make matrix_2'
+From the repository root (copies sources into `build/` then builds):
 
-'~$ make matrix_3'
+```bash
+make build_LAB_14
+```
 
-#### Удаление проекта:
+Or build only this task after the lab tree exists under `build/`:
 
-'~$ make clean'
-____
+```bash
+make -C build/LABS/LAB_14/task_matrix build
+```
+
+You can also `cd` into `LABS/LAB_14/task_matrix` and run `make build` if `vars.make` paths resolve (root build flow is the supported path).
+
+## Run
+
+`make build && make run`
+
+Expected binaries (under `bin/` of the build tree): `matrix_multiplication`.
+
+For multi-binary tasks:
+
+```bash
+PROG=<name> make run
+```
+
+## Clean
+
+```bash
+make -C build/LABS/LAB_14/task_matrix clean
+# or from root:
+make clean_LAB_14
+```

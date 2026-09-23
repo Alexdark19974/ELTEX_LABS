@@ -1,19 +1,43 @@
-# Мьютексы и управление потоками
-## Задание:
-### Написать программу, которая эмулирует ситуацию из жизни: 3 покупателя с потребностями в диапазоне от 4500 ед. до 5500 ед., 5 магазинов с количеством товаров в диапазоне от 950 ед. до 1050 ед. и 1 погрузчик, который пополняет магазины на 500 единиц товаров.
-### В какой-то момент в 1 магазине может находитсья только 1 покупатель. Скупает всё, что есть, и потребность уменьшается. Достигается одномоментное нахождение применением mutex'a.
-### Результат: все покупатели должны быть удовлетворены в своих потребностях.
-____
+# Customer / store threads
 
-#### Сборка проекта:
+**Lab:** `LAB_14` · **Task:** `task_customer`
 
-'~$ make all'
+## Goal
 
-#### Запуск проекта:
+Threaded shopper/store simulations with synchronization between customers and stock.
 
-'~$ make customer_store'
+## Build
 
-#### Удаление проекта:
+From the repository root (copies sources into `build/` then builds):
 
-'~$ make clean'
-____
+```bash
+make build_LAB_14
+```
+
+Or build only this task after the lab tree exists under `build/`:
+
+```bash
+make -C build/LABS/LAB_14/task_customer build
+```
+
+You can also `cd` into `LABS/LAB_14/task_customer` and run `make build` if `vars.make` paths resolve (root build flow is the supported path).
+
+## Run
+
+`make build`; run `customer_store*` binaries.
+
+Expected binaries (under `bin/` of the build tree): `customer_store`, `customer_store_2`, `customer_store_3`.
+
+For multi-binary tasks:
+
+```bash
+PROG=<name> make run
+```
+
+## Clean
+
+```bash
+make -C build/LABS/LAB_14/task_customer clean
+# or from root:
+make clean_LAB_14
+```
