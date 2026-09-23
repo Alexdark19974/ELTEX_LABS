@@ -30,7 +30,7 @@ CFLAGS += -I$(INCLUDE_DIR) -D_POSIX_C_SOURCE=199309L -D_GNU_SOURCE # for sigacti
 ifeq ($(DEBUG),y)
 CFLAGS += -g3 -O0 -DDEBUG=1 -DNDEBUG=0
 else
-CFLAGS += -O2 -FORTIFY_SOURCE=2 -DNDEBUG=1 -fstack-protector-strong -fstack-clash-protection
+CFLAGS += -O2 -D_FORTIFY_SOURCE=2 -DNDEBUG=1 -fstack-protector-strong -fstack-clash-protection
 endif
 LDFLAGS += -fPIC
 ###########################################

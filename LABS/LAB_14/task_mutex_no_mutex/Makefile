@@ -27,7 +27,7 @@ CFLAGS := -Wall -Wextra -std=c99 -pedantic -Wformat -Wformat-security -D_GNU_SOU
 ifeq ($(DEBUG),y)
 CFLAGS += -g3 -O0 -DDEBUG=1 -DNDEBUG=0
 else
-CFLAGS += -O2 -FORTIFY_SOURCE=2 -DNDEBUG=1 -fstack-protector-strong -fstack-clash-protection
+CFLAGS += -O2 -D_FORTIFY_SOURCE=2 -DNDEBUG=1 -fstack-protector-strong -fstack-clash-protection
 endif
 ###########################################
 .PHONY: build run run_vlgrnd cppcheck clean
