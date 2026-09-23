@@ -30,7 +30,7 @@ CPPCHECK_FLAGS := --inconclusive --language=c --std=c99 --enable=all --suppress=
 CFLAGS := -Wall -Wextra -Werror -std=c99 -pedantic -Wformat -Wformat-security
 CFLAGS += -I$(INCLUDE_DIR)
 ifeq ($(DEBUG),y)
-CFLAGS += -g3 -O0 -DDEBUG=1 -DDNDEBUG=0
+CFLAGS += -g3 -O0 -DDEBUG=1
 else
 CFLAGS += -O2 -D_FORTIFY_SOURCE=2 -DNDEBUG=1 -fstack-protector-strong -fstack-clash-protection
 endif
@@ -71,4 +71,4 @@ cppcheck:
 
 clean:
 	$(Q)echo ""
-	rm -rf $(BUILD_DIR) $(BIN_DIR)
+	rm -rf $(BUILD_DIR) $(BIN_DIR) $(LIB_DIR)

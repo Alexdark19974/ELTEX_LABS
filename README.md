@@ -37,9 +37,9 @@ PROG=client make -C build/LABS/LAB_18/task_tcp_inet run
 
 | Variable | Values | Meaning |
 |----------|--------|---------|
-| `DEBUG` / `USE_DEBUG` | `y`/`n` | Debug symbols / `-O0` (name differs across task Makefiles) |
+| `DEBUG` | `y`/`n` | Debug symbols and `-O0` when `y` (default `n`) |
+| `LAB` | `LAB_*` or `all` | Which lab `build`, `clean`, and `cppcheck` apply to |
 | `PROG` | binary name | Which program `make run` executes when several exist |
-| `USE_VALGRIND` | `y`/`n` | Documented in helper (prefer `make run_vlgrnd` in tasks) |
 
 ## Labs overview
 
