@@ -1,21 +1,22 @@
-# LAB_12: ncurses TUI
+# LAB_12: Processes: fork/exec/wait
 
 ## Topic
 
-Terminal UI with ncurses (nano/mc-like demos)
+UNIX process model
 
 ## Summary
 
-ncurses experiments: widgets/input, a mini text editor (`nano`), and Midnight Commander–style dual-pane demos.
+Covers `fork`, zombies, `wait`, `exec*`, and a small interactive shell (`mini_bash`).
 
 ## Tasks
 
 | Task | Title |
 |------|-------|
-| `task_curse_files` | ncurses demos |
-| `task_mc` | Mini Midnight Commander |
-| `task_mc_all_In_one` | MC all-in-one |
-| `task_nano` | Mini nano editor |
+| `task_exec` | exec family |
+| `task_forked_zombies` | Zombie processes |
+| `task_mini_bash` | Mini bash |
+| `task_show_fork` | Show fork |
+| `task_wait_fork` | fork + wait |
 
 ## Build this lab
 

@@ -1,18 +1,18 @@
-# LAB_9: Shared library calculator
+# LAB_9: Modular dynamic library
 
 ## Topic
 
-Dynamic shared objects (`.so`)
+Shared libraries and modular calculator design
 
 ## Summary
 
-Builds `libstack.so` with `-shared -fPIC` and links the calculator dynamically (`-L… -lstack`).
+Further modularizes the dynamic-stack calculator, reinforcing PIC, soname-style linking, and runtime library search paths.
 
 ## Tasks
 
 | Task | Title |
 |------|-------|
-| `task_dynamic_calc` | Calculator + libstack.so |
+| `task_mod_dynamic_lib` | Modular dynamic calculator |
 
 ## Build this lab
 

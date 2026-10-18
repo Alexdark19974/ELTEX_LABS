@@ -42,21 +42,21 @@ build: $(OBJS) $(LIB_DIR)/$(LIB_STACK)
 	$(Q)echo "GOAL: $(BIN_DIR)/$(PROG)"
 	$(Q)echo "PREREQ: $^"
 	$(MKDIR) -p $(BIN_DIR)
-	$(CC) $(CFLAGS) $^ -o $(BIN_DIR)/$(PROG) || exit $?
+	$(CC) $(CFLAGS) $^ -o $(BIN_DIR)/$(PROG) || exit $$?
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(Q)echo ""
 	$(Q)echo "GOAL: $@"
 	$(Q)echo "PREREQ: $^"
 	$(MKDIR) -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@ || exit $?
+	$(CC) $(CFLAGS) -c $< -o $@ || exit $$?
 
 $(LIB_DIR)/$(LIB_STACK): $(STACK_OBJS)
 	$(Q)echo ""
 	$(Q)echo "GOAL: $@"
 	$(Q)echo "PREREQ: $^"
 	$(MKDIR) -p $(LIB_DIR)
-	$(AR) $(AR_FLAGS) $@ $^ || exit $?
+	$(AR) $(AR_FLAGS) $@ $^ || exit $$?
 
 run: $(BIN_DIR)/$(PROG)
 	$(BIN_DIR)/$(PROG)

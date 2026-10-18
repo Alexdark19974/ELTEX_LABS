@@ -34,10 +34,6 @@ For multi-binary tasks:
 PROG=<name> make run
 ```
 
-## Notes
-
-`clean` currently removes `build/` and `bin/` but not `lib/` — delete `lib/libstack.a` manually if needed.
-
 ## Clean
 
 ```bash

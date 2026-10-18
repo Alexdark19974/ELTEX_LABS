@@ -1,18 +1,18 @@
-# LAB_8: Static library calculator (variant)
+# LAB_8: Shared library calculator
 
 ## Topic
 
-Static linking of a stack calculator
+Dynamic shared objects (`.so`)
 
 ## Summary
 
-Same calculator architecture as LAB_7 with a slightly different Makefile/link recipe for the static stack library.
+Builds `libstack.so` with `-shared -fPIC` and links the calculator dynamically (`-L… -lstack`).
 
 ## Tasks
 
 | Task | Title |
 |------|-------|
-| `task_static_calc` | Calculator + static stack (variant) |
+| `task_dynamic_calc` | Calculator + libstack.so |
 
 ## Build this lab
 

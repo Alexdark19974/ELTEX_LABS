@@ -6,6 +6,13 @@ _backup_pre_readme/
 [Oo]bj/
 [Bb]in/
 
+# Task-local artifacts (authoritative builds live under build/)
+LABS/**/bin/
+LABS/**/lib/
+LABS/**/build/
+*.a
+*.so
+
 # Other files and folders
 .settings/
 

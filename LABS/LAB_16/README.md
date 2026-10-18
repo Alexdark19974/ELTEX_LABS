@@ -1,23 +1,26 @@
-# LAB_16: Message queues
+# LAB_16: Semaphores and shared memory
 
 ## Topic
 
-POSIX and System V IPC message queues
+POSIX/System V semaphores and shared memory; chatroom
 
 ## Summary
 
-Sender/receiver pairs and combined modes for POSIX `mq_*` and System V `msgsnd`/`msgrcv` queues.
+Sync with semaphores, exchange data via shared memory, plus an ncurses shared-memory chatroom.
 
 ## Tasks
 
 | Task | Title |
 |------|-------|
-| `task_posix_queues_1` | POSIX MQ: sender & receiver |
-| `task_posix_queues_2` | POSIX MQ: extended |
-| `task_posix_queues_3` | POSIX MQ: combined mode |
-| `task_sys_v_queues_1` | System V MQ: sender & receiver |
-| `task_sys_v_queues_2` | System V MQ: extended |
-| `task_sys_v_queues_3` | System V MQ: combined mode |
+| `task_posix_semaphores_1` | POSIX sem: increment race |
+| `task_posix_semaphores_2` | POSIX sem: consumer/supplier |
+| `task_posix_shmem_1` | POSIX shm: reader/writer |
+| `task_posix_shmem_2` | POSIX shm: client/server chatty exchange |
+| `task_shmem_chatroom` | Shared-memory chatroom (ncurses) |
+| `task_system_v_semaphores_1` | System V sem: increment |
+| `task_system_v_semaphores_2` | System V sem: consumer/supplier |
+| `task_system_v_shmem_1` | System V shm: reader/writer |
+| `task_system_v_shmem_2` | System V shm: client/server |
 
 ## Build this lab
 

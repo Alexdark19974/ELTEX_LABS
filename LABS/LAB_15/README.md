@@ -1,24 +1,23 @@
-# LAB_15: Pipes and shell pipelines
+# LAB_15: Message queues
 
 ## Topic
 
-Anonymous pipes and command pipelines
+POSIX and System V IPC message queues
 
 ## Summary
 
-From parent/child pipe exchange to multi-command `|` pipelines and a pipe-capable mini shell.
+Sender/receiver pairs and combined modes for POSIX `mq_*` and System V `msgsnd`/`msgrcv` queues.
 
 ## Tasks
 
 | Task | Title |
 |------|-------|
-| `task_pipe1` | Parent/child pipe exchange |
-| `task_pipe2` | Two-command pipeline |
-| `task_pipe3` | N-command pipeline |
-| `task_pipe4` | Pipeline variant 4 |
-| `task_pipe5` | Pipeline variant 5 |
-| `task_pipe6` | exec command list over pipes |
-| `task_pipe7` | Mini bash with pipes |
+| `task_posix_queues_1` | POSIX MQ: sender & receiver |
+| `task_posix_queues_2` | POSIX MQ: extended |
+| `task_posix_queues_3` | POSIX MQ: combined mode |
+| `task_sys_v_queues_1` | System V MQ: sender & receiver |
+| `task_sys_v_queues_2` | System V MQ: extended |
+| `task_sys_v_queues_3` | System V MQ: combined mode |
 
 ## Build this lab
 

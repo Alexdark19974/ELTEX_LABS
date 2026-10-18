@@ -7,15 +7,19 @@
 # $? (bash) - holds the exit status code of the last executed command ($$? for make recipes)
 OPEN_SOURCE_PROJECTS := Open_Source_Projects
 SHELL := /bin/sh
-CC := /bin/cc
-VLGRND := /bin/valgrind
-GDB	:= /bin/gdb
-CPPCHECK :=	/bin/cppcheck
-MOVE := /bin/mv
-MKDIR := /bin/mkdir
-COPY := /bin/cp
+# Single-shell recipes; -e aborts on the first failing command (needed with .ONESHELL).
+.SHELLFLAGS := -ec
+.ONESHELL:
+.DELETE_ON_ERROR:
+CC := cc
+VLGRND := valgrind
+GDB := gdb
+CPPCHECK := cppcheck
+MOVE := mv
+MKDIR := mkdir
+COPY := cp
 REMOVE := rm
-AR := /bin/ar
+AR := ar
 LIB_PREFIX := lib
 AR_EXT := a
 SO_EXT := so

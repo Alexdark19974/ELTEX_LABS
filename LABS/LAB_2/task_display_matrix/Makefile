@@ -34,7 +34,7 @@ build: $(OBJS)
 	$(Q)echo ""
 	$(Q)echo "GOAL: $(BIN_DIR)/$(PROG)"
 	$(Q)echo "PREREQ: $^"
-	$(MKDIR) -p $(BIN_DIR) || exit $?
+	$(MKDIR) -p $(BIN_DIR) || exit $$?
 	$(CC) $(CFLAGS) $^ -o $(BIN_DIR)/$(PROG)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c

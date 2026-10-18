@@ -1,23 +1,24 @@
-# LAB_14: POSIX threads
+# LAB_14: Pipes and shell pipelines
 
 ## Topic
 
-pthreads, mutexes, condition variables
+Anonymous pipes and command pipelines
 
 ## Summary
 
-Race conditions vs mutex strategies, `pthread_once`, condition variables, producer/consumer-style store, and threaded matrix multiply.
+From parent/child pipe exchange to multi-command `|` pipelines and a pipe-capable mini shell.
 
 ## Tasks
 
 | Task | Title |
 |------|-------|
-| `task_cond_wait` | Condition variables |
-| `task_customer` | Customer / store threads |
-| `task_matrix` | Threaded matrix multiply |
-| `task_mutex_no_mutex` | Races vs mutex strategies |
-| `task_pthread_once` | pthread_once |
-| `task_thread_opts` | Thread attributes |
+| `task_pipe1` | Parent/child pipe exchange |
+| `task_pipe2` | Two-command pipeline |
+| `task_pipe3` | N-command pipeline |
+| `task_pipe4` | Pipeline variant 4 |
+| `task_pipe5` | Pipeline variant 5 |
+| `task_pipe6` | exec command list over pipes |
+| `task_pipe7` | Mini bash with pipes |
 
 ## Build this lab
 

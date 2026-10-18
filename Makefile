@@ -16,15 +16,25 @@ CPPCHECK_LABS := $(addprefix cppcheck_, $(LABS))
 
 include vars.make
 
-.PHONY: build clean cppcheck $(BUILD_LABS) build_all $(CLEAN_LABS) clean_all $(CPPCHECK_LABS) cppcheck_all clean_build help
+.PHONY: build clean cppcheck list $(BUILD_LABS) build_all $(CLEAN_LABS) clean_all $(CPPCHECK_LABS) cppcheck_all clean_build help
 
 # LAB comes from vars.make (default: all). Command line overrides it:
-#   make build LAB=LAB_11
+#   make build LAB=LAB_10
 #   make clean
-#   make cppcheck LAB=LAB_11 DEBUG=y
+#   make cppcheck LAB=LAB_10 DEBUG=y
 build: build_$(LAB)
 clean: clean_$(LAB)
 cppcheck: cppcheck_$(LAB)
+
+# Print every lab and its task_* directories (sources under LABS/).
+list:
+	$(Q)for lab in $(LABS); do \
+		echo "$$lab"; \
+		for task in "$(LAB_DIR)/$$lab"/task_*/; do \
+			[ -d "$$task" ] || continue; \
+			echo "  $$(basename "$$task")"; \
+		done; \
+	done
 
 build_all: $(BUILD_LABS)
 	$(Q)echo "BUILDING $(LABS)...DONE"
@@ -53,7 +63,7 @@ $(CPPCHECK_LABS): cppcheck_LAB_%:
 
 clean_build:
 	$(Q)echo "GOAL: $@"
-	$(REMOVE) -rf $(BUILD_DIR) || exit $?
+	$(REMOVE) -rf $(BUILD_DIR) || exit $$?
 
 .PHONY: help
 help:

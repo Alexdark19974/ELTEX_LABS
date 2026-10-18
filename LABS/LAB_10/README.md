@@ -1,18 +1,18 @@
-# LAB_10: Modular dynamic library
+# LAB_10: File I/O and get_line
 
 ## Topic
 
-Shared libraries and modular calculator design
+stdio vs POSIX I/O, reading lines safely
 
 ## Summary
 
-Further modularizes the dynamic-stack calculator, reinforcing PIC, soname-style linking, and runtime library search paths.
+Implements a bounded `get_line`, then writes/reads a string using both `fopen`/`fread` and `open`/`write` paths.
 
 ## Tasks
 
 | Task | Title |
 |------|-------|
-| `task_mod_dynamic_lib` | Modular dynamic calculator |
+| `task_get_line` | get_line + fopen/open modes |
 
 ## Build this lab
 

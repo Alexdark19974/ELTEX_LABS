@@ -1,26 +1,21 @@
-# LAB_17: Semaphores and shared memory
+# LAB_17: Sockets
 
 ## Topic
 
-POSIX/System V semaphores and shared memory; chatroom
+TCP/UDP over AF_INET and AF_LOCAL
 
 ## Summary
 
-Sync with semaphores, exchange data via shared memory, plus an ncurses shared-memory chatroom.
+Echo-style client/server pairs for Internet and UNIX-domain sockets, stream (TCP) and datagram (UDP).
 
 ## Tasks
 
 | Task | Title |
 |------|-------|
-| `task_posix_semaphores_1` | POSIX sem: increment race |
-| `task_posix_semaphores_2` | POSIX sem: consumer/supplier |
-| `task_posix_shmem_1` | POSIX shm: reader/writer |
-| `task_posix_shmem_2` | POSIX shm: client/server chatty exchange |
-| `task_shmem_chatroom` | Shared-memory chatroom (ncurses) |
-| `task_system_v_semaphores_1` | System V sem: increment |
-| `task_system_v_semaphores_2` | System V sem: consumer/supplier |
-| `task_system_v_shmem_1` | System V shm: reader/writer |
-| `task_system_v_shmem_2` | System V shm: client/server |
+| `task_tcp_inet` | TCP AF_INET echo |
+| `task_tcp_local` | TCP AF_LOCAL (UNIX stream) |
+| `task_udp_inet` | UDP AF_INET |
+| `task_udp_local` | UDP AF_LOCAL (UNIX datagram) |
 
 ## Build this lab
 

@@ -1,22 +1,23 @@
-# LAB_13: Processes: fork/exec/wait
+# LAB_13: POSIX threads
 
 ## Topic
 
-UNIX process model
+pthreads, mutexes, condition variables
 
 ## Summary
 
-Covers `fork`, zombies, `wait`, `exec*`, and a small interactive shell (`mini_bash`).
+Race conditions vs mutex strategies, `pthread_once`, condition variables, producer/consumer-style store, and threaded matrix multiply.
 
 ## Tasks
 
 | Task | Title |
 |------|-------|
-| `task_exec` | exec family |
-| `task_forked_zombies` | Zombie processes |
-| `task_mini_bash` | Mini bash |
-| `task_show_fork` | Show fork |
-| `task_wait_fork` | fork + wait |
+| `task_cond_wait` | Condition variables |
+| `task_customer` | Customer / store threads |
+| `task_matrix` | Threaded matrix multiply |
+| `task_mutex_no_mutex` | Races vs mutex strategies |
+| `task_pthread_once` | pthread_once |
+| `task_thread_opts` | Thread attributes |
 
 ## Build this lab
 

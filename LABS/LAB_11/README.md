@@ -1,18 +1,21 @@
-# LAB_11: File I/O and get_line
+# LAB_11: ncurses TUI
 
 ## Topic
 
-stdio vs POSIX I/O, reading lines safely
+Terminal UI with ncurses (nano/mc-like demos)
 
 ## Summary
 
-Implements a bounded `get_line`, then writes/reads a string using both `fopen`/`fread` and `open`/`write` paths.
+ncurses experiments: widgets/input, a mini text editor (`nano`), and Midnight Commander–style dual-pane demos.
 
 ## Tasks
 
 | Task | Title |
 |------|-------|
-| `task_get_line` | get_line + fopen/open modes |
+| `task_curse_files` | ncurses demos |
+| `task_mc` | Mini Midnight Commander |
+| `task_mc_all_In_one` | MC all-in-one |
+| `task_nano` | Mini nano editor |
 
 ## Build this lab
 
